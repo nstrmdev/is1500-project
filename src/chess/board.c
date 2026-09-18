@@ -60,6 +60,14 @@ void print_board(Board *b) {
   }
 }
 
+// TEMPORARY DESTROY THIS
+void construct_temp_board(Board *b) {
+  // Set all squares to empty
+  clear_board(b);
+
+  (*b)[51] = WHITE_ROOK;
+}
+
 void construct_starting_position(Board *b) {
   // Set all squares to empty
   clear_board(b);
