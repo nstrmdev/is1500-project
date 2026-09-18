@@ -2,7 +2,18 @@
 // Copyright (c) 2026 Arvid Westman
 // SPDX-License-Identifier: BSD-3-Clause
 
+/*
+  This is called an include guard, we need it
+  to avoid a bunch of redefinition errors when
+  we need to include multiple header files.
+*/
+#ifndef CHESS_PIECE_H
+#define CHESS_PIECE_H
+
 #include <stdint.h>
+
+// Represents a piece.
+typedef uint8_t Piece;
 
 /*
   Piece type and color are disjoint piece
@@ -11,21 +22,38 @@
   Inspiration from:
   https://chessprogramming.org/Pieces
 */
-typedef enum {
-  EMPTY  = 0x0,
-  PAWN   = 0x4,
-  ROOK   = 0x8,
-  KNIGHT = 0x10,
-  BISHOP = 0x20,
-  QUEEN  = 0x40,
-  KING   = 0x80,
-} PieceType;
+enum {
+  COLOR_NONE   = 0x0,
+  COLOR_WHITE  = 0x1,
+  COLOR_BLACK  = 0x2, 
+};
 
-typedef enum {
-  NONE  = 0x0,
-  WHITE = 0x1,
-  BLACK = 0x2, 
-} PieceColor;
+enum {
+  PIECE_EMPTY  = 0x0,
+  PIECE_PAWN   = 0x4,
+  PIECE_ROOK   = 0x8,
+  PIECE_KNIGHT = 0x10,
+  PIECE_BISHOP = 0x20,
+  PIECE_QUEEN  = 0x40,
+  PIECE_KING   = 0x80,
+};
 
-// Represents a piece.
-typedef uint8_t Piece;
+enum {
+  EMPTY_SQUARE = COLOR_NONE  | PIECE_EMPTY,
+  
+  WHITE_PAWN   = COLOR_WHITE | PIECE_PAWN,
+  WHITE_ROOK   = COLOR_WHITE | PIECE_ROOK,
+  WHITE_KNIGHT = COLOR_WHITE | PIECE_KNIGHT,
+  WHITE_BISHOP = COLOR_WHITE | PIECE_BISHOP,
+  WHITE_QUEEN  = COLOR_WHITE | PIECE_QUEEN,
+  WHITE_KING   = COLOR_WHITE | PIECE_KING,
+
+  BLACK_PAWN   = COLOR_BLACK | PIECE_PAWN,
+  BLACK_ROOK   = COLOR_BLACK | PIECE_ROOK,
+  BLACK_KNIGHT = COLOR_BLACK | PIECE_KNIGHT,
+  BLACK_BISHOP = COLOR_BLACK | PIECE_BISHOP,
+  BLACK_QUEEN  = COLOR_BLACK | PIECE_QUEEN,
+  BLACK_KING   = COLOR_BLACK | PIECE_KING,
+};
+
+#endif // End of include guard, keep this at the bottom!

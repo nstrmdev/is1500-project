@@ -7,47 +7,46 @@
 #include <stdio.h>
 
 static void clear_board(Board *b) {
-  // Empty
-  Piece e  = EMPTY  | NONE;
+  Piece e  = EMPTY_SQUARE;
 
   for (int i = 0; i <= 127; i++) {
     (*b)[i] = e;
   }
 }
 
-static char hex_to_char(const unsigned char c) {
-  switch (c) {
-    case EMPTY:
+static char piece_to_char(const Piece piece) {
+  switch (piece) {
+    case EMPTY_SQUARE:
       return '.';
 
-    case (PAWN | WHITE):
+    case (WHITE_PAWN):
       return 'P';
-    case (ROOK | WHITE):
+    case (WHITE_ROOK):
       return 'R';
-    case (KNIGHT | WHITE):
+    case (WHITE_KNIGHT):
       return 'N';
-    case (BISHOP | WHITE):
+    case (WHITE_BISHOP):
       return 'B';
-    case (QUEEN | WHITE):
+    case (WHITE_QUEEN):
       return 'Q';
-    case (KING | WHITE):
+    case (WHITE_KING):
       return 'K';
 
-    case (PAWN | BLACK):
+    case (BLACK_PAWN):
       return 'p';
-    case (ROOK | BLACK):
+    case (BLACK_ROOK):
       return 'r';
-    case (KNIGHT | BLACK):
+    case (BLACK_KNIGHT):
       return 'n';
-    case (BISHOP | BLACK):
+    case (BLACK_BISHOP):
       return 'b';
-    case (QUEEN | BLACK):
+    case (BLACK_QUEEN):
       return 'q';
-    case (KING | BLACK):
+    case (BLACK_KING):
       return 'k';
 
     default:
-      return '_';
+      return '?';
   }
 }
 
@@ -55,58 +54,42 @@ void print_board(Board *b) {
   for (int rank = 7; rank >= 0; rank--) {
     for (int file = 0; file <= 7; file++) {
       int square = 16 * rank + file;
-      printf("%c ", hex_to_char((*b)[square]));
+      printf("%c ", piece_to_char((*b)[square]));
     }
     printf("\n");
   }
 }
 
 void construct_starting_position(Board *b) {
-  // White pieces
-  Piece wp = PAWN   | WHITE;
-  Piece wr = ROOK   | WHITE;
-  Piece wn = KNIGHT | WHITE;
-  Piece wb = BISHOP | WHITE;
-  Piece wq = QUEEN  | WHITE;
-  Piece wk = KING   | WHITE;
-
-  // Black pieces
-  Piece bp = PAWN   | BLACK;
-  Piece br = ROOK   | BLACK;
-  Piece bn = KNIGHT | BLACK;
-  Piece bb = BISHOP | BLACK;
-  Piece bq = QUEEN  | BLACK;
-  Piece bk = KING   | BLACK;
-
   // Set all squares to empty
   clear_board(b);
 
   // Place pawns
   for (int i = 16; i <= 23; i++) {
-     (*b)[i] = wp;
+     (*b)[i] = WHITE_PAWN;
   }
 
   for (int i = 96; i <= 103; i++) {
-    (*b)[i] = bp;
+    (*b)[i] = BLACK_PAWN;
   }
 
   // White back rank
-  (*b)[0] = wr;
-  (*b)[1] = wn;
-  (*b)[2] = wb;
-  (*b)[3] = wq;
-  (*b)[4] = wk;
-  (*b)[5] = wb;
-  (*b)[6] = wn;
-  (*b)[7] = wr;
+  (*b)[0] = WHITE_ROOK;
+  (*b)[1] = WHITE_KNIGHT;
+  (*b)[2] = WHITE_BISHOP;
+  (*b)[3] = WHITE_QUEEN;
+  (*b)[4] = WHITE_KING;
+  (*b)[5] = WHITE_BISHOP;
+  (*b)[6] = WHITE_KNIGHT;
+  (*b)[7] = WHITE_ROOK;
 
   // Black back rank
-  (*b)[112] = br;
-  (*b)[113] = bn;
-  (*b)[114] = bb;
-  (*b)[115] = bq;
-  (*b)[116] = bk;
-  (*b)[117] = bb;
-  (*b)[118] = bn;
-  (*b)[119] = br;
+  (*b)[112] = BLACK_ROOK;
+  (*b)[113] = BLACK_KNIGHT;
+  (*b)[114] = BLACK_BISHOP;
+  (*b)[115] = BLACK_QUEEN;
+  (*b)[116] = BLACK_KING;
+  (*b)[117] = BLACK_BISHOP;
+  (*b)[118] = BLACK_KNIGHT;
+  (*b)[119] = BLACK_ROOK;
 }
