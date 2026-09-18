@@ -11,6 +11,7 @@
 #define CHESS_BOARD_H
 
 #include "piece.h"
+typedef uint8_t Square;
 
 // Represents the board.
 typedef Piece Board[128];
