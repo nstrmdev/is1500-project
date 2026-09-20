@@ -7,7 +7,12 @@
 #include "chess/movegen.h"
 
 // Piece offsets
-uint8_t ROOK_MOVESET[] = {-1, 1, 16, -16};
+int8_t ROOK_MOVESET[4] = {-1, 1, 16, -16};
+int8_t BISHOP_MOVESET[4] = {15, 17, -15, -17};
+int8_t QUEEN_MOVESET[8] = {-1, 1, 16, -16, 15, 17, -15, -17};
+int8_t PAWN_MOVESET[4] = {16, 15, 17, 32};
+int8_t KNIGHT_MOVESET[8] = {18, 33, 31, 14, -18, -33, -31, -14};
+int8_t KING_MOVESET[8] = {-1, 1, 16, -16, 15, 17, -15, -17};
 
 // Is piece on board?
 // Returns true if on board, false if not.
@@ -30,7 +35,7 @@ static Piece strip_color(const Piece p) {
   return (p & 0xFC);
 }
 
-static void generate_sliding_moves(Move *moves, const Position *position, const Offset offset, const Square fs) {
+static void generate_sliding_moves(Move **moves, const Position *position, const Offset offset, const Square fs) {
   for (size_t i = 0; i < offset.size; i++) {
     int8_t dir = offset.moves[i];
     Color cur_color = position->side_to_move;
@@ -43,9 +48,9 @@ static void generate_sliding_moves(Move *moves, const Position *position, const 
         break;
       }
 
-      moves->from_square = fs;
-      moves->to_square   = cur_sq;
-      moves++;
+      (*moves)->from_square = fs;
+      (*moves)->to_square   = cur_sq;
+      (*moves)++;
 
       if (is_enemy(piece, cur_color)) {
         break;
@@ -56,6 +61,124 @@ static void generate_sliding_moves(Move *moves, const Position *position, const 
   }
 }
 
+static void generate_king_moves(Move **moves, const Position *position, const Offset offset, const Square fs){
+  for (size_t i = 0; i < offset.size; i++){
+    int8_t dir = offset.moves[i];
+    Color cur_color = position->side_to_move;
+    Square cur_sq = fs + dir;
+    Piece piece = position->board[cur_sq];
+      //firend on square
+      if (is_friend(piece, cur_color)) {
+        continue;
+      }
+      if (!on_board(cur_sq)){
+        continue;
+      }
+      
+      (*moves)->from_square = fs;
+      (*moves)->to_square   = cur_sq;
+      (*moves)++;
+      
+  }
+}
+
+static void generate_knight_moves(Move **moves, const Position *position, const Offset offset, const Square fs){
+  for (size_t i = 0; i < offset.size; i++){
+    int8_t dir = offset.moves[i];
+    Color cur_color = position->side_to_move;
+    Square cur_sq = fs + dir;
+    Piece piece = position->board[cur_sq];
+      //firend on square
+      if (is_friend(piece, cur_color)) {
+        continue;
+      }
+      if (!on_board(cur_sq)){
+        continue;
+      }
+      
+      (*moves)->from_square = fs;
+      (*moves)->to_square   = cur_sq;
+      (*moves)++;
+      
+  }
+}
+
+static int on_pawn_rank(Square sq, Color c){
+  switch (c){
+    case COLOR_WHITE:
+      return (sq >= WHITE_RANK_START && sq <= WHITE_RANK_END);
+    case COLOR_BLACK:
+       return (sq >= BLACK_RANK_START && sq <= BLACK_RANK_END);
+    default:
+      break;
+  }
+}
+/*
+static void generate_pawn_moves(Move **moves, const Position *position, const Offset offset, const Square fs){
+  int can_move_fowrard = 0;
+  for (size_t i = 0; i < offset.size; i++){
+    int8_t dir = offset.moves[i];
+    Color cur_color = position->side_to_move;
+    Square cur_sq = fs + dir;
+    Piece piece = position->board[cur_sq];
+      //firend on square
+      if (is_friend(piece, cur_color)) {
+        continue;
+      }
+      if (!on_board(cur_sq)){
+        continue;
+      }
+      //trying to move diagonally but nothing to capture
+      if (!is_enemy(piece, cur_color) && (abs(dir) == 15 || abs(dir) == 17)){
+        continue;
+      }
+      if (on_pawn_rank(fs, cur_color) && abs(dir) == 32){
+        
+      }
+      
+      
+      
+      (*moves)->from_square = fs;
+      (*moves)->to_square   = cur_sq;
+      (*moves)++;
+      
+  }
+}
+
+
+
+/*static void generate_pawn_moves(Move *moves, const Position *position, const Offset offset, const Square fs){
+
+
+  for (size_t i = 0; i < offset_count; i++) {
+    int8_t current_square = start_square;
+    int8_t direction = offset[i];
+    
+    current_square += direction;
+
+    if (current_square & 0x88){
+        continue;
+    }
+   
+    Piece piece = position->board[current_square];
+      
+      
+    
+    if (piece & position->side_to_move) {
+        continue;
+    }
+      
+    if ((piece & (position->side_to_move ^ 3)) ) {
+        
+    }
+      
+      moves->from_square = start_square;
+      moves->to_square   = current_square;
+      moves++;
+      
+  }
+}*/
+
 static Offset generate_offset(Piece p) {
   Offset o;
 
@@ -64,6 +187,36 @@ static Offset generate_offset(Piece p) {
       o.size = 4;
       for (int i = 0; i < o.size; i++) {
         o.moves[i] = ROOK_MOVESET[i];
+      }
+      return o;
+    case PIECE_BISHOP:
+      o.size = 4;
+      for (int i = 0; i < o.size; i++) {
+        o.moves[i] = BISHOP_MOVESET[i]; 
+      }
+      return o;
+    case PIECE_QUEEN:
+      o.size = 8;
+      for (int i = 0; i < o.size; i++) {
+        o.moves[i] = QUEEN_MOVESET[i]; 
+      }
+      return o;
+    case PIECE_KNIGHT:
+      o.size = 8;
+      for (int i = 0; i < o.size; i++) {
+        o.moves[i] = KNIGHT_MOVESET[i]; 
+      }
+      return o;
+    case PIECE_KING:
+      o.size = 8;
+      for (int i = 0; i < o.size; i++) {
+        o.moves[i] = KING_MOVESET[i]; 
+      }
+      return o;
+    case PIECE_PAWN:
+      o.size = 4;
+      for (int i = 0; i < o.size; i++) {
+        o.moves[i] = PAWN_MOVESET[i]; 
       }
       return o;
 
@@ -79,7 +232,22 @@ void generate_pseudo_legal_moves(Move *moves, Position *position) {
         Color cur_color = position->side_to_move;
         Piece cur_piece = position->board[sq];
         if (cur_piece == (PIECE_ROOK | cur_color)) {
-          generate_sliding_moves(moves, position, generate_offset(cur_piece), sq);
+          generate_sliding_moves(&moves, position, generate_offset(cur_piece), sq);
+        }
+        if (cur_piece == (PIECE_QUEEN | cur_color)) {
+          generate_sliding_moves(&moves, position, generate_offset(cur_piece), sq);
+        }
+        if (cur_piece == (PIECE_BISHOP | cur_color)) {
+          generate_sliding_moves(&moves, position, generate_offset(cur_piece), sq);
+        }
+        if (cur_piece == (PIECE_KNIGHT | cur_color)) {
+          generate_knight_moves(&moves, position, generate_offset(cur_piece), sq);
+        }
+        if (cur_piece == (PIECE_KING | cur_color)) {
+          generate_king_moves(&moves, position, generate_offset(cur_piece), sq);
+        }
+        if (cur_piece == (PIECE_PAWN | cur_color)) {
+          //generate_pawn_moves(moves, position, generate_offset(cur_piece), sq);
         }
     }
 }

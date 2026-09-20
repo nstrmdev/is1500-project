@@ -66,6 +66,10 @@ void construct_temp_board(Board b) {
   clear_board(b);
 
   b[51] = WHITE_ROOK;
+  b[52] = WHITE_KNIGHT;
+  b[67] = WHITE_KING;
+  b[19] = BLACK_QUEEN;
+  b[7] = BLACK_BISHOP;
 }
 
 void construct_starting_position(Board b) {

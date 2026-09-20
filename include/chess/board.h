@@ -11,6 +11,11 @@
 #define CHESS_BOARD_H
 
 #include "piece.h"
+#define WHITE_RANK_START 16
+#define WHITE_RANK_END 23
+#define BLACK_RANK_START 96
+#define BLACK_RANK_END 103
+
 
 // Represents a square.
 typedef uint8_t Square;

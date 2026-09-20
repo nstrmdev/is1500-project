@@ -12,7 +12,7 @@
 
 int main(void) {
   Position p;
-  p.side_to_move = COLOR_WHITE;
+  p.side_to_move = COLOR_BLACK;
 
   Move *moves = malloc(256 * sizeof(Move));
 
