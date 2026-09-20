@@ -14,6 +14,7 @@
 
 // Represents a piece.
 typedef uint8_t Piece;
+typedef uint8_t Color;
 
 /*
   Piece type and color are disjoint piece

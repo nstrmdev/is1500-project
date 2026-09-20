@@ -6,11 +6,11 @@
 #include "chess/piece.h"
 #include <stdio.h>
 
-static void clear_board(Board *b) {
+static void clear_board(Board b) {
   Piece e  = EMPTY_SQUARE;
 
   for (int i = 0; i <= 127; i++) {
-    (*b)[i] = e;
+    b[i] = e;
   }
 }
 
@@ -50,54 +50,54 @@ static char piece_to_char(const Piece piece) {
   }
 }
 
-void print_board(Board *b) {
+void print_board(Board b) {
   for (int rank = 7; rank >= 0; rank--) {
     for (int file = 0; file <= 7; file++) {
       int square = 16 * rank + file;
-      printf("%c ", piece_to_char((*b)[square]));
+      printf("%c ", piece_to_char(b[square]));
     }
     printf("\n");
   }
 }
 
 // TEMPORARY DESTROY THIS
-void construct_temp_board(Board *b) {
+void construct_temp_board(Board b) {
   // Set all squares to empty
   clear_board(b);
 
-  (*b)[51] = WHITE_ROOK;
+  b[51] = WHITE_ROOK;
 }
 
-void construct_starting_position(Board *b) {
+void construct_starting_position(Board b) {
   // Set all squares to empty
   clear_board(b);
 
   // Place pawns
   for (int i = 16; i <= 23; i++) {
-     (*b)[i] = WHITE_PAWN;
+     b[i] = WHITE_PAWN;
   }
 
   for (int i = 96; i <= 103; i++) {
-    (*b)[i] = BLACK_PAWN;
+    b[i] = BLACK_PAWN;
   }
 
   // White back rank
-  (*b)[0] = WHITE_ROOK;
-  (*b)[1] = WHITE_KNIGHT;
-  (*b)[2] = WHITE_BISHOP;
-  (*b)[3] = WHITE_QUEEN;
-  (*b)[4] = WHITE_KING;
-  (*b)[5] = WHITE_BISHOP;
-  (*b)[6] = WHITE_KNIGHT;
-  (*b)[7] = WHITE_ROOK;
+  b[0] = WHITE_ROOK;
+  b[1] = WHITE_KNIGHT;
+  b[2] = WHITE_BISHOP;
+  b[3] = WHITE_QUEEN;
+  b[4] = WHITE_KING;
+  b[5] = WHITE_BISHOP;
+  b[6] = WHITE_KNIGHT;
+  b[7] = WHITE_ROOK;
 
   // Black back rank
-  (*b)[112] = BLACK_ROOK;
-  (*b)[113] = BLACK_KNIGHT;
-  (*b)[114] = BLACK_BISHOP;
-  (*b)[115] = BLACK_QUEEN;
-  (*b)[116] = BLACK_KING;
-  (*b)[117] = BLACK_BISHOP;
-  (*b)[118] = BLACK_KNIGHT;
-  (*b)[119] = BLACK_ROOK;
+  b[112] = BLACK_ROOK;
+  b[113] = BLACK_KNIGHT;
+  b[114] = BLACK_BISHOP;
+  b[115] = BLACK_QUEEN;
+  b[116] = BLACK_KING;
+  b[117] = BLACK_BISHOP;
+  b[118] = BLACK_KNIGHT;
+  b[119] = BLACK_ROOK;
 }

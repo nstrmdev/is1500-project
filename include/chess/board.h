@@ -18,8 +18,8 @@ typedef uint8_t Square;
 // Represents the board.
 typedef Piece Board[128];
 
-void print_board(Board *b); 
-void construct_starting_position(Board *b); 
-void construct_temp_board(Board *b);
+void print_board(Board b); 
+void construct_starting_position(Board b); 
+void construct_temp_board(Board b);
 
 #endif // End of include guard, keep this at the bottom!

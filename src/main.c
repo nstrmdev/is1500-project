@@ -12,16 +12,14 @@
 
 int main(void) {
   Position p;
-  Board b;
-  p.board = &b;
   p.side_to_move = COLOR_WHITE;
 
   Move *moves = malloc(256 * sizeof(Move));
 
-  construct_temp_board(&b);
-  print_board(&b);
+  construct_temp_board(p.board);
+  print_board(p.board);
 
-  possible_moves(moves, &p);
+  generate_pseudo_legal_moves(moves, &p);
 
   for (int i = 0; i < 256; i++) {
     printf("From: %d", moves[i].from_square);
