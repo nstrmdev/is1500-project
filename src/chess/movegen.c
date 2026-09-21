@@ -10,7 +10,7 @@
 int8_t ROOK_MOVESET[4] = {-1, 1, 16, -16};
 int8_t BISHOP_MOVESET[4] = {15, 17, -15, -17};
 int8_t QUEEN_MOVESET[8] = {-1, 1, 16, -16, 15, 17, -15, -17};
-int8_t PAWN_MOVESET[4] = {16, 15, 17, 32};
+int8_t PAWN_MOVESET[3] = {16, 15, 17};
 int8_t KNIGHT_MOVESET[8] = {18, 33, 31, 14, -18, -33, -31, -14};
 int8_t KING_MOVESET[8] = {-1, 1, 16, -16, 15, 17, -15, -17};
 
@@ -28,6 +28,9 @@ static int is_friend(const Piece p, const Color c) {
 // Flips the color.
 static int is_enemy(const Piece p, const Color c) {
   return (p & (c ^ 3));
+}
+static int is_empty(const Piece p) {
+  return (!(p & 3));
 }
 
 // Discards the color from a piece.
@@ -110,74 +113,74 @@ static int on_pawn_rank(Square sq, Color c){
     case COLOR_BLACK:
        return (sq >= BLACK_RANK_START && sq <= BLACK_RANK_END);
     default:
-      break;
+      return -1; // Something went wrong
   }
 }
-/*
-static void generate_pawn_moves(Move **moves, const Position *position, const Offset offset, const Square fs){
-  int can_move_fowrard = 0;
-  for (size_t i = 0; i < offset.size; i++){
-    int8_t dir = offset.moves[i];
-    Color cur_color = position->side_to_move;
-    Square cur_sq = fs + dir;
-    Piece piece = position->board[cur_sq];
-      //firend on square
-      if (is_friend(piece, cur_color)) {
-        continue;
+
+
+
+static void generate_pawn_moves(Move **moves, const Position *position, const Square fs){
+  
+  Color cur_color = position->side_to_move;
+  
+  int8_t straight = 16;
+  int8_t left = 15;
+  int8_t right = 17;
+  if (cur_color & COLOR_BLACK){
+      straight = -16;
+      left = -15;
+      right = -17;
+    }
+  //MOVE FORWARD
+  Square cur_sq = fs + straight;
+   
+  Piece piece = position->board[cur_sq];
+
+  if (is_empty(piece)){
+    (*moves)->from_square = fs;
+    (*moves)->to_square   = cur_sq;
+    (*moves)++;
+    //Check double push
+    if (on_pawn_rank(fs, cur_color)){
+      cur_sq += straight;
+      piece = position->board[cur_sq];
+      if (is_empty(piece)){
+        (*moves)->from_square = fs;
+        (*moves)->to_square   = cur_sq;
+        (*moves)++;
       }
-      if (!on_board(cur_sq)){
-        continue;
-      }
-      //trying to move diagonally but nothing to capture
-      if (!is_enemy(piece, cur_color) && (abs(dir) == 15 || abs(dir) == 17)){
-        continue;
-      }
-      if (on_pawn_rank(fs, cur_color) && abs(dir) == 32){
-        
-      }
-      
-      
-      
+    }
+  }
+
+
+  //MOVE DIAGONALY LEFT AND CAPTURE
+  cur_sq = fs + left;
+  if (on_board(cur_sq)){
+    piece = position->board[cur_sq];
+
+    if (is_enemy(piece, cur_color) ){
       (*moves)->from_square = fs;
       (*moves)->to_square   = cur_sq;
       (*moves)++;
-      
+    } 
+  }
+
+  //MOVE DIAGONALY RIGHT AND CAPTURE
+  cur_sq = fs + right;
+  if (on_board(cur_sq)){
+    piece = position->board[cur_sq];
+
+    if (is_enemy(piece, cur_color) ){
+      (*moves)->from_square = fs;
+      (*moves)->to_square   = cur_sq;
+      (*moves)++;
+    } 
   }
 }
 
 
 
-/*static void generate_pawn_moves(Move *moves, const Position *position, const Offset offset, const Square fs){
 
-
-  for (size_t i = 0; i < offset_count; i++) {
-    int8_t current_square = start_square;
-    int8_t direction = offset[i];
-    
-    current_square += direction;
-
-    if (current_square & 0x88){
-        continue;
-    }
-   
-    Piece piece = position->board[current_square];
-      
-      
-    
-    if (piece & position->side_to_move) {
-        continue;
-    }
-      
-    if ((piece & (position->side_to_move ^ 3)) ) {
-        
-    }
-      
-      moves->from_square = start_square;
-      moves->to_square   = current_square;
-      moves++;
-      
-  }
-}*/
 
 static Offset generate_offset(Piece p) {
   Offset o;
@@ -247,7 +250,7 @@ void generate_pseudo_legal_moves(Move *moves, Position *position) {
           generate_king_moves(&moves, position, generate_offset(cur_piece), sq);
         }
         if (cur_piece == (PIECE_PAWN | cur_color)) {
-          //generate_pawn_moves(moves, position, generate_offset(cur_piece), sq);
+          generate_pawn_moves(&moves, position, sq); // might be more optimal with colored pawn functions
         }
     }
 }

@@ -68,8 +68,16 @@ void construct_temp_board(Board b) {
   b[51] = WHITE_ROOK;
   b[52] = WHITE_KNIGHT;
   b[67] = WHITE_KING;
+  b[20] = WHITE_PAWN;
+  b[21] = WHITE_PAWN;
+  b[4] = WHITE_PAWN;
+  b[68] = BLACK_PAWN;
+  b[99] = BLACK_PAWN;
+  b[98] = BLACK_PAWN;
   b[19] = BLACK_QUEEN;
+  b[36] = BLACK_PAWN;
   b[7] = BLACK_BISHOP;
+  
 }
 
 void construct_starting_position(Board b) {
