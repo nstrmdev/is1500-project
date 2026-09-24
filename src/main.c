@@ -13,6 +13,7 @@
 int main(void) {
   Position p;
   p.side_to_move = COLOR_BLACK;
+  p.can_castle = 15;
 
   Move *moves = malloc(256 * sizeof(Move));
 

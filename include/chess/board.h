@@ -15,6 +15,10 @@
 #define WHITE_RANK_END 23
 #define BLACK_RANK_START 96
 #define BLACK_RANK_END 103
+#define FIRST_RANK_START 0
+#define FIRST_RANK_END 7
+#define EIGHTH_RANK_START 112
+#define EIGHTH_RANK_END 119
 
 
 // Represents a square.

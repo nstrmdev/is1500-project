@@ -55,6 +55,15 @@ enum {
   BLACK_BISHOP = COLOR_BLACK | PIECE_BISHOP,
   BLACK_QUEEN  = COLOR_BLACK | PIECE_QUEEN,
   BLACK_KING   = COLOR_BLACK | PIECE_KING,
+
+
+};
+
+enum {
+  CASTLE_WHITE_QUEEN = 1,
+  CASTLE_WHITE_KING = 2,
+  CASTLE_BLACK_QUEEN = 4,
+  CASTLE_BLACK_KING = 8,
 };
 
 #endif // End of include guard, keep this at the bottom!

@@ -117,6 +117,10 @@ static int on_pawn_rank(Square sq, Color c){
   }
 }
 
+static int can_promote(Square sq){
+  return ((sq >= FIRST_RANK_START && sq <= FIRST_RANK_END) 
+  || (sq >= EIGHTH_RANK_START && sq <= EIGHTH_RANK_END));
+}
 
 
 static void generate_pawn_moves(Move **moves, const Position *position, const Square fs){
@@ -139,6 +143,9 @@ static void generate_pawn_moves(Move **moves, const Position *position, const Sq
   if (is_empty(piece)){
     (*moves)->from_square = fs;
     (*moves)->to_square   = cur_sq;
+    if (can_promote(cur_sq)){
+      // ADD PROMOTE FLAG TO MOVES
+    } 
     (*moves)++;
     //Check double push
     if (on_pawn_rank(fs, cur_color)){
@@ -152,7 +159,6 @@ static void generate_pawn_moves(Move **moves, const Position *position, const Sq
     }
   }
 
-
   //MOVE DIAGONALY LEFT AND CAPTURE
   cur_sq = fs + left;
   if (on_board(cur_sq)){
@@ -161,6 +167,9 @@ static void generate_pawn_moves(Move **moves, const Position *position, const Sq
     if (is_enemy(piece, cur_color) ){
       (*moves)->from_square = fs;
       (*moves)->to_square   = cur_sq;
+      if (can_promote(cur_sq)){
+      // ADD PROMOTE FLAG TO MOVES
+      } 
       (*moves)++;
     } 
   }
@@ -173,11 +182,50 @@ static void generate_pawn_moves(Move **moves, const Position *position, const Sq
     if (is_enemy(piece, cur_color) ){
       (*moves)->from_square = fs;
       (*moves)->to_square   = cur_sq;
+      if (can_promote(cur_sq)){
+      // ADD PROMOTE FLAG TO MOVES
+      } 
       (*moves)++;
     } 
   }
 }
 
+static void generate_castle_moves(Move **moves, const Position *position){
+  
+  if (position->side_to_move & COLOR_WHITE){
+    if (position->can_castle & CASTLE_WHITE_QUEEN){
+      if(is_empty(position->board[3]) && is_empty(position->board[2]) && is_empty(position->board[1])){
+      (*moves)->from_square = 4;
+      (*moves)->to_square   = 2;
+      (*moves)++;
+      }
+    }
+    if (position->can_castle & CASTLE_WHITE_KING){
+      if(is_empty(position->board[5]) && is_empty(position->board[6])){
+      (*moves)->from_square = 4;
+      (*moves)->to_square   = 6;
+      (*moves)++;
+      }
+    }
+  }
+
+  if (position->side_to_move & COLOR_BLACK){
+    if (position->can_castle & CASTLE_BLACK_QUEEN){
+      if(is_empty(position->board[115]) && is_empty(position->board[114]) && is_empty(position->board[113])){
+      (*moves)->from_square = 116;
+      (*moves)->to_square   = 114;
+      (*moves)++;
+      }
+    }
+    if (position->can_castle & CASTLE_BLACK_KING){
+      if(is_empty(position->board[117]) && is_empty(position->board[118])){
+      (*moves)->from_square = 116;
+      (*moves)->to_square   = 118;
+      (*moves)++;
+      }
+    }
+  } 
+}
 
 
 
@@ -248,6 +296,7 @@ void generate_pseudo_legal_moves(Move *moves, Position *position) {
         }
         if (cur_piece == (PIECE_KING | cur_color)) {
           generate_king_moves(&moves, position, generate_offset(cur_piece), sq);
+          generate_castle_moves(&moves, position);
         }
         if (cur_piece == (PIECE_PAWN | cur_color)) {
           generate_pawn_moves(&moves, position, sq); // might be more optimal with colored pawn functions

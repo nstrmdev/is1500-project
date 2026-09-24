@@ -6,6 +6,8 @@
 typedef struct {
   Square from_square;
   Square to_square;
+  //ADD PROMOTE FLAG
+  //ADD CASTLE FLAG
 } Move;
 
 #endif
