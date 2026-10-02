@@ -2,7 +2,7 @@
 
 // Calculate and return the player velocity.
 static float calculate_velocity(float vel, PlayerConfig p_cfg, float dir) {
-  if (dir > 0) {
+  if (dir != 0) {
     // Apply acceleration.
     return move_toward(vel, p_cfg.MAX_SPEED * dir, p_cfg.ACCELERATION);  // * dt
   } else {
