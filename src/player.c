@@ -2,8 +2,13 @@
 
 // Calculate and return the player velocity.
 static float calculate_velocity(float vel, PlayerConfig p_cfg, float dir) {
-  // TODO: Scale acceleration by delta time.
-  return move_toward(vel, p_cfg.MAX_SPEED * dir, p_cfg.ACCELERATION);  // * dt
+  if (dir > 0) {
+    // Apply acceleration.
+    return move_toward(vel, p_cfg.MAX_SPEED * dir, p_cfg.ACCELERATION);  // * dt
+  } else {
+    // Apply friction.
+    return move_toward(vel, 0, p_cfg.FRICTION);  // * dt
+  }
 }
 
 // Sets the player velocity and position.
