@@ -1,11 +1,23 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include "game_math.h"
 
-// Maybe we want to move the player settings into
-// a PlayerConfig struct or something like that?
+// Holds our player settings.
+typedef struct {
+  // Movement constants
+  const float MAX_SPEED;
+  const float ACCELERATION;
+  const float FRICTION;
+} PlayerConfig;
 
 // Represents our player.
 typedef struct {
   Vec2 position;
   Vec2 velocity;
-  float movement_speed;
 } Player;
+
+// Function declarations.
+void move_player(Player* p, PlayerConfig p_cfg, Vec2 input_dir);
+
+#endif
