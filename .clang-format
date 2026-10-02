@@ -1,6 +1,38 @@
+# Use google's style
 BasedOnStyle: Google
+
+# Intent blocks/wrapped lines by 2 spaces
 IndentWidth: 2
+ContinuationIndentWidth: 2
+
+# Wrap lines longer than 100 columns
 ColumnLimit: 100
+
+# Keep opening braces on the same line
 BreakBeforeBraces: Attach
+
+# type: float* value
 DerivePointerAlignment: false
 PointerAlignment: Left
+
+# Keep function body on multiple lines
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+
+# Indent wrapped arguments instead of aligning with the opening parenthesis
+AlignAfterOpenBracket: false
+
+# Break after "(" and before ")"
+BreakAfterOpenBracketFunction: true
+BreakBeforeCloseBracketFunction: true
+
+# Put each argument on its own line when a call wraps
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
+
+# Apply to both function declarations and definition params
+BinPackParameters: OnePerLine
+AllowAllParametersOfDeclarationOnNextLine: false
