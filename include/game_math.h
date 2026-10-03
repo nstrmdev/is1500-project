@@ -75,8 +75,26 @@ static inline float vec2_get_length(Vec2 v) {
   return sqrt_approx(v.x * v.x + v.y * v.y);
 }
 
+// Returns the result of a subtraction of two vectors.
+static inline Vec2 vec2_subtract(Vec2 a, Vec2 b) {
+  return (Vec2){.x = a.x - b.x, .y = a.y - b.y};
+}
+
 // Move a vector toward a target vector with a fixed time step.
 static inline Vec2 vec2_move_toward(Vec2 current, Vec2 target, float step) {
+  Vec2 diff = vec2_subtract(target, current);
+  float diff_len = vec2_get_length(diff);
+
+  if (diff_len == 0.0f || diff_len <= step) {
+    return target;
+  }
+
+  float scalar = step / diff_len;
+
+  return (Vec2){
+    .x = current.x + diff.x * scalar,
+    .y = current.y + diff.y * scalar,
+  };
 }
 
 #endif
