@@ -40,7 +40,7 @@ static inline float move_toward(float current, float target, float step) {
   More info is available here:
   https://en.wikipedia.org/wiki/Fast_inverse_square_root
 */
-static inline float inverse_sqrt(float num) {
+static inline float inverse_sqrt_approx(float num) {
   const float threehalfs = 1.5f;
 
   float x2 = num * 0.5F;
@@ -60,14 +60,23 @@ static inline float inverse_sqrt(float num) {
   return y;
 }
 
+// Returns the approximation of the square root of num.
+static inline float sqrt_approx(float num) {
+  if (num == 0.0f) {
+    return 0.0f;
+  }
+
+  // num * 1/sqrt(num) = sqrt(num)
+  return num * inverse_sqrt_approx(num);
+}
+
 // Get the length of a vector.
 static inline float vec2_get_length(Vec2 v) {
-  // 1/sqrt(v) * v = sqrt(v)
+  return sqrt_approx(v.x * v.x + v.y * v.y);
 }
 
 // Move a vector toward a target vector with a fixed time step.
 static inline Vec2 vec2_move_toward(Vec2 current, Vec2 target, float step) {
-  // float difference =
 }
 
 #endif
