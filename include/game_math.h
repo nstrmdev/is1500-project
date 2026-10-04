@@ -75,9 +75,22 @@ static inline float vec2_get_length(Vec2 v) {
   return sqrt_approx(v.x * v.x + v.y * v.y);
 }
 
+// Returns the result of an addition of two vectors.
+static inline Vec2 vec2_add(Vec2 a, Vec2 b) {
+  return (Vec2){.x = a.x + b.x, .y = a.y + b.y};
+}
+
 // Returns the result of a subtraction of two vectors.
 static inline Vec2 vec2_subtract(Vec2 a, Vec2 b) {
   return (Vec2){.x = a.x - b.x, .y = a.y - b.y};
+}
+
+// Returns a scaled vector by some scalar.
+static inline Vec2 vec2_scale(Vec2 a, float s) {
+  return (Vec2){
+    .x = a.x * s,
+    .y = a.y * s,
+  };
 }
 
 // Move a vector toward a target vector with a fixed time step.
@@ -91,10 +104,8 @@ static inline Vec2 vec2_move_toward(Vec2 current, Vec2 target, float step) {
 
   float scalar = step / diff_len;
 
-  return (Vec2){
-    .x = current.x + diff.x * scalar,
-    .y = current.y + diff.y * scalar,
-  };
+  // current + diff * scalar
+  return vec2_scale(vec2_add(current, diff), scalar);
 }
 
 #endif
