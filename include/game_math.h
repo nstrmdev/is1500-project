@@ -70,9 +70,14 @@ static inline float sqrt_approx(float num) {
   return num * inverse_sqrt_approx(num);
 }
 
+// Returns the length of the vector squared.
+static inline float vec2_get_length_squared(Vec2 v) {
+  return v.x * v.x + v.y * v.y;
+}
+
 // Get the length of a vector.
 static inline float vec2_get_length(Vec2 v) {
-  return sqrt_approx(v.x * v.x + v.y * v.y);
+  return sqrt_approx(vec2_get_length_squared(v));
 }
 
 // Returns the result of an addition of two vectors.
@@ -93,6 +98,18 @@ static inline Vec2 vec2_scale(Vec2 a, float s) {
   };
 }
 
+// Returns a normalized vector.
+static inline Vec2 vec2_normalize(Vec2 v) {
+  float length_sq = vec2_get_length_squared(v);
+
+  // Handle the case where length is zero.
+  if (length_sq == 0.0f) {
+    return v;
+  }
+
+  return vec2_scale(v, inverse_sqrt_approx(length_sq));
+}
+
 // Move a vector toward a target vector with a fixed time step.
 static inline Vec2 vec2_move_toward(Vec2 current, Vec2 target, float step) {
   Vec2 diff = vec2_subtract(target, current);
@@ -102,10 +119,7 @@ static inline Vec2 vec2_move_toward(Vec2 current, Vec2 target, float step) {
     return target;
   }
 
-  float scalar = step / diff_len;
-
-  // current + diff * scalar
-  return vec2_scale(vec2_add(current, diff), scalar);
+  return vec2_add(current, vec2_scale(diff, step / diff_len));
 }
 
 #endif
