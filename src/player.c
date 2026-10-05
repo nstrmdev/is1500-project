@@ -1,5 +1,4 @@
 #include "../include/player.h"
-
 #include "../include/game_math.h"
 
 // Returns true if the player is moving.
