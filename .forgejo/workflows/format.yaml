@@ -1,0 +1,35 @@
+name: formatting
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  format:
+    runs-on: formatting
+    timeout-minutes: 10
+
+    steps:
+      - name: install tools
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            ca-certificates git nodejs python3-venv
+          python3 -m venv /opt/formatter
+          /opt/formatter/bin/pip install --only-binary=:all: \
+            clang-format==23.1.2
+
+      - name: checkout repository
+        uses: https://github.com/actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          github-server-url: http://forgejo:3000
+          persist-credentials: false
+
+      - name: check formatting
+        run: |
+          /opt/formatter/bin/clang-format --version
+          test -f .clang-format
+          find src include -type f \( -name '*.c' -o -name '*.h' \) \
+            -exec /opt/formatter/bin/clang-format \
+              --dry-run --Werror {} +
