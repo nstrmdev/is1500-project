@@ -6,9 +6,9 @@
 // Holds our player settings.
 typedef struct {
   // Movement constants
-  const float MAX_SPEED;
-  const float ACCELERATION;
-  const float FRICTION;
+  float max_speed;
+  float acceleration;
+  float friction;
 } PlayerConfig;
 
 // Represents our player.
