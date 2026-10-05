@@ -36,3 +36,6 @@ AllowAllArgumentsOnNextLine: false
 # Apply to both function declarations and definition params
 BinPackParameters: OnePerLine
 AllowAllParametersOfDeclarationOnNextLine: false
+
+# Don't group own headers
+IncludeBlocks: Merge

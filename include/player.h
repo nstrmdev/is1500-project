@@ -6,9 +6,9 @@
 // Holds our player settings.
 typedef struct {
   // Movement constants
-  const float MAX_SPEED;
-  const float ACCELERATION;
-  const float FRICTION;
+  float max_speed;
+  float acceleration;
+  float friction;
 } PlayerConfig;
 
 // Represents our player.
@@ -18,6 +18,6 @@ typedef struct {
 } Player;
 
 // Function declarations.
-void move_player(Player* p, PlayerConfig p_cfg, Vec2 input_dir);
+void player_move(Player* p, const PlayerConfig* cfg, Vec2 input_dir);
 
 #endif
