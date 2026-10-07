@@ -7,5 +7,5 @@ void handle_interrupt(void) {
 }
 
 int main(void) {
-    print("Hello, World!");
+  print("Hello, World!");
 }
