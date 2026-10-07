@@ -1,3 +1,4 @@
+#include "../platform/dtekv-lib.h"
 #include "../include/player.h"
 #include "../include/game_math.h"
 
@@ -34,5 +35,6 @@ Player default_player() {
     p.position = (Vec2){160.0f, 120.0f};
     p.velocity = (Vec2){0.0f, 0.0f};
 
+    print("[INFO] Player created...\n");
     return p;
 }
