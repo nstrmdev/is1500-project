@@ -1,5 +1,4 @@
-#include "../include/timer.h"
-
+#include "timer.h"
 int is_running;
 
 /*void start_game_loop(void) {
