@@ -27,3 +27,12 @@ void player_move(Player* p, const PlayerConfig* cfg, Vec2 input_dir) {
   // TODO: Scale velocity by delta time.
   p->position = vec2_add(p->position, p->velocity);
 }
+
+Player default_player() {
+    Player p;
+
+    p.position = (Vec2){160.0f, 120.0f};
+    p.velocity = (Vec2){0.0f, 0.0f};
+
+    return p;
+}

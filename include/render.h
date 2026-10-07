@@ -1,3 +1,8 @@
+#ifndef RENDER_H
+#define RENDER_H
+
+#include "player.h"
+
 // Represents our framebuffer.
 typedef struct {
     volatile unsigned char* pixels;
@@ -15,3 +20,6 @@ enum {
 // Function declarations.
 Framebuffer default_framebuffer();
 void clear_screen(Framebuffer f);
+void draw_player(Framebuffer f, Player p);
+
+#endif
