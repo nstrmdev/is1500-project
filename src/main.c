@@ -1,11 +1,6 @@
 #include "../include/game_loop.h"
-"
 #include "../include/player.h"
 #include "../include/render.h"
-
-  void handle_interrupt(void) {
-  // Handle interrupts here
-}
 
 int main(void) {
   Framebuffer frame_buffer = default_framebuffer();
