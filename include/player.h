@@ -19,5 +19,6 @@ typedef struct {
 
 // Function declarations.
 void player_move(Player* p, const PlayerConfig* cfg, Vec2 input_dir);
+Player default_player();
 
 #endif
