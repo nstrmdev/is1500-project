@@ -1,11 +1,10 @@
 #include "../platform/dtekv-lib.h"
-
-// VGA Buffer is on this address
-volatile int* framebuffer = (volatile int*)0x08000000;
+#include "../include/render.h"
 
 void handle_interrupt(void) {
 }
 
 int main(void) {
-  print("Hello, World!");
+    Framebuffer frame_buffer = default_framebuffer();
+    clear_screen(frame_buffer);
 }
