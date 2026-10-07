@@ -1,7 +1,9 @@
+#include "../include/game_loop.h"
+"
 #include "../include/player.h"
 #include "../include/render.h"
 
-void handle_interrupt(void) {
+  void handle_interrupt(void) {
   // Handle interrupts here
 }
 
@@ -15,6 +17,7 @@ int main(void) {
     // Get input
 
     // Update game state
+    start_game_loop();
 
     // Render
     clear_screen(&frame_buffer);
