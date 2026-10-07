@@ -1,5 +1,4 @@
-
-#include "timer.h"
+#include "../include/timer.h"
 
 volatile int* TIME_ADDRESS = (volatile int*)0x04000020;
 // initialize and start the Dtek-V timer
