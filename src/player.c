@@ -1,6 +1,6 @@
-#include "../platform/dtekv-lib.h"
 #include "../include/player.h"
 #include "../include/game_math.h"
+#include "../platform/dtekv-lib.h"
 
 // Returns true if the player is moving.
 static int is_moving(const Player* p) {
@@ -30,11 +30,11 @@ void player_move(Player* p, const PlayerConfig* cfg, Vec2 input_dir) {
 }
 
 Player default_player() {
-    Player p;
+  Player p;
 
-    p.position = (Vec2){160.0f, 120.0f};
-    p.velocity = (Vec2){0.0f, 0.0f};
+  p.position = (Vec2){160.0f, 120.0f};
+  p.velocity = (Vec2){0.0f, 0.0f};
 
-    print("[INFO] Player created...\n");
-    return p;
+  print("[INFO] Player created...\n");
+  return p;
 }
