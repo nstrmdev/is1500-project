@@ -1,6 +1,6 @@
-#include "../include/enemy.h"
-#include "../include/game_math.h"
-#include "../include/player.h"
+#include "../../include/entities/enemy.h"
+#include "../../include/entities/player.h"
+#include "../../include/game_math.h"
 
 // Returns a normalized direction vector toward the player.
 Vec2 enemy_get_move_dir(Enemy* e, Player* p) {

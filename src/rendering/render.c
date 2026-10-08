@@ -1,6 +1,7 @@
-#include "../include/render.h"
-#include "../include/player.h"
-#include "../platform/dtekv-lib.h"
+#include "../../include/rendering/render.h"
+#include "../../include/entities/player.h"
+#include "../../include/rendering/vga.h"
+#include "../../platform/dtekv-lib.h"
 
 // Returns the default framebuffer.
 Framebuffer default_framebuffer() {
@@ -17,36 +18,6 @@ Framebuffer default_framebuffer() {
 
   print("[INFO] Framebuffer created...\n");
   return f;
-}
-
-// Sets the values in the DMA controller.
-void setup_dma(Framebuffer* f) {
-  f->front_buffer = (volatile unsigned char*)DMA_BUFFER;
-  f->back_buffer = (volatile unsigned char*)DMA_BACK_BUFFER;
-
-  if (f->front_buffer == FRONT_BUFFER_ADDR) {
-    f->back_buffer = BACK_BUFFER_ADDR;
-  } else {
-    f->back_buffer = FRONT_BUFFER_ADDR;
-  }
-
-  DMA_BACK_BUFFER = (unsigned int)f->back_buffer;
-  print("[INFO] DMA initialized...\n");
-}
-
-// Swaps the current buffer.
-void swap_buffer(Framebuffer* f) {
-  DMA_BACK_BUFFER = (unsigned int)f->back_buffer;
-  DMA_BUFFER = 0;  // request swap
-
-  while ((DMA_STATUS & 0x1) != 0) {
-    // wait until hardware is ready to swap
-  }
-
-  // swap the adresses
-  volatile unsigned char* temp = f->front_buffer;
-  f->front_buffer = f->back_buffer;
-  f->back_buffer = temp;
 }
 
 // Clears the screen to black.
@@ -68,6 +39,10 @@ void draw_player(Framebuffer* f, Player* p) {
     for (int p_y = 0; p_y < player_height; p_y++) {
       int screen_x = p->position.x + p_x;
       int screen_y = p->position.y + p_y;
+
+      // TODO: Add bounds checking to make sure we're not
+      // outside the resolution bounds.
+
       f->back_buffer[screen_y * f->stride + screen_x] = 0xFF;  // white
     }
   }

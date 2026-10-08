@@ -1,7 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "game_math.h"
+#include "../game_math.h"
 #include "player.h"
 
 // Holds an enemy type config

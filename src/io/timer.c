@@ -1,6 +1,7 @@
-#include "../include/timer.h"
+#include "../../include/io/timer.h"
 
 volatile int* TIME_ADDRESS = (volatile int*)0x04000020;
+
 // initialize and start the Dtek-V timer
 // fps translates to number of time outs per second
 void start_timer(int fps) {
@@ -33,7 +34,7 @@ void reset_time_out(void) {
 
 // returns current clock cycle (32 bits)
 unsigned int get_clock_cycle(void) {
-  unsigned int cycle;
-  __asm__ volatile("csrr %0, mycycle" : "=r"(cycle));
-  return cycle;
+  unsigned int cycles;
+  __asm__ volatile("csrr %0, mcycle" : "=r"(cycles));
+  return cycles;
 }

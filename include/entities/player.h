@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "game_math.h"
+#include "../game_math.h"
 
 // Holds our player settings.
 typedef struct {
@@ -18,6 +18,8 @@ typedef struct {
 } Player;
 
 // Function declarations.
-void player_move(Player* p, const PlayerConfig* cfg, Vec2 input_dir);
+void player_move(Player* p, const PlayerConfig* cfg, Vec2 input_dir, float dt);
+Player default_player();
+PlayerConfig default_player_config();
 
 #endif
