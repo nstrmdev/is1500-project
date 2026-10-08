@@ -22,10 +22,11 @@ Framebuffer default_framebuffer() {
 
 // Clears the screen to black.
 void clear_screen(Framebuffer* f) {
-  for (int y = 0; y < f->height; y++) {
-    for (int x = 0; x < f->width; x++) {
-      f->back_buffer[y * f->stride + x] = 0x0;  // black
-    }
+  const unsigned int count = f->height * f->width;
+  volatile unsigned char* pixels = f->back_buffer;
+
+  for (int p = 0; p < count; p++) {
+    pixels[p] = 0x0;
   }
 }
 
@@ -35,10 +36,13 @@ void draw_player(Framebuffer* f, Player* p) {
   int player_width = 16;
   int player_height = 16;
 
+  int pos_x = (int)p->position.x;
+  int pos_y = (int)p->position.y;
+
   for (int p_x = 0; p_x < player_width; p_x++) {
     for (int p_y = 0; p_y < player_height; p_y++) {
-      int screen_x = p->position.x + p_x;
-      int screen_y = p->position.y + p_y;
+      int screen_x = pos_x + p_x;
+      int screen_y = pos_y + p_y;
 
       // TODO: Add bounds checking to make sure we're not
       // outside the resolution bounds.
